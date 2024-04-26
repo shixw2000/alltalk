@@ -1,3 +1,4 @@
+#include<cstdlib>
 #include<cstring>
 #include"clicenter.h"
 #include"routeragent.h"

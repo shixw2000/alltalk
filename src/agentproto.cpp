@@ -30,7 +30,7 @@ int AgentProto::parseData(int direction,
     int ret = 0;
     
     while (0 < size) {
-        if (cache->m_pos < DEF_MSG_HEAD_SIZE) {
+        if ((int)cache->m_pos < DEF_MSG_HEAD_SIZE) {
             ret = parseHead(cache, buf, size);
         } else {
             ret = parseBody(direction, fd,
@@ -72,7 +72,7 @@ int AgentProto::parseHead(SockBuffer* buffer,
     bool bOk = false;
     char* psz = NULL;
     
-    if (buffer->m_pos < DEF_MSG_HEAD_SIZE) {
+    if ((int)buffer->m_pos < DEF_MSG_HEAD_SIZE) {
         cnt = DEF_MSG_HEAD_SIZE - buffer->m_pos;
         psz = &buffer->m_head[buffer->m_pos];
         
