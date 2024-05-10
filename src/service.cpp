@@ -10,6 +10,7 @@
 #include"agentproto.h"
 #include"clicenter.h"
 #include"routeragent.h"
+#include"cache.h"
 
 
 Service::Service() {
@@ -22,7 +23,7 @@ Service::Service() {
 
     m_rd_timeout = 0;
     m_wr_timeout = 0;
-    memset(m_log_dir, 0, sizeof(m_log_dir));
+    CacheUtil::bzero(m_log_dir, sizeof(m_log_dir));
 }
 
 Service::~Service() {

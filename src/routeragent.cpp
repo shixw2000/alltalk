@@ -8,6 +8,7 @@
 #include"agentproto.h"
 #include"msgcenter.h"
 #include"clicenter.h"
+#include"cache.h"
 
 
 AgentListener::AgentListener(AgentCenter* agent) {
@@ -197,9 +198,9 @@ int AgentCenter::addLink(const char ip[],
     int ret = 0;
     
     if (!existLink(link_type)) {
-        LinkAddr* addr = (LinkAddr*)malloc(sizeof(LinkAddr));
+        LinkAddr* addr = (LinkAddr*)CacheUtil::mallocAlign(sizeof(LinkAddr));
 
-        memset(addr, 0, sizeof(LinkAddr));
+        CacheUtil::bzero(addr, sizeof(LinkAddr));
         addr->m_uid = uid;
         addr->m_link_type = link_type;
         addr->m_port = port;
@@ -214,7 +215,7 @@ int AgentCenter::addLink(const char ip[],
 }
 
 void AgentCenter::freeLink(LinkAddr* addr) {
-    free(addr);
+    CacheUtil::freeAlign(addr);
 }
 
 bool AgentCenter::existLink(int link_type) {
@@ -349,23 +350,23 @@ int AgentCenter::creatAgentCli(int parentId, NodeMsg* msg) {
 AgentConf* AgentCenter::allocConf() {
     AgentConf* conf = NULL;
 
-    conf = (AgentConf*)malloc(sizeof(AgentConf));
-    memset(conf, 0, sizeof(AgentConf));
+    conf = (AgentConf*)CacheUtil::mallocAlign(sizeof(AgentConf));
+    CacheUtil::bzero(conf, sizeof(AgentConf));
     
     return conf;
 }
 
 void AgentCenter::freeConf(AgentConf* conf) {
-    free(conf);
+    CacheUtil::freeAlign(conf);
 }
 
 AgentBase* AgentCenter::allocAgent(const char ip[],
     int port, int link_type) {
     AgentBase* data = NULL;
  
-    data = (AgentBase*)malloc(sizeof(AgentBase));
+    data = (AgentBase*)CacheUtil::mallocAlign(sizeof(AgentBase));
     if (NULL != data) {
-        memset(data, 0, sizeof(*data));
+        CacheUtil::bzero(data, sizeof(*data));
         
         data->m_timestamp = MiscTool::getTimeSec();
 
@@ -378,7 +379,7 @@ AgentBase* AgentCenter::allocAgent(const char ip[],
 }
 
 void AgentCenter::freeAgent(AgentBase* data) {
-    free(data);
+    CacheUtil::freeAlign(data);
 }
 
 void AgentCenter::onClose(int hd) {

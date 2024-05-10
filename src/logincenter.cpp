@@ -3,6 +3,7 @@
 #include"logincenter.h"
 #include"msgcenter.h"
 #include"misc.h"
+#include"cache.h"
 
 
 LoginCenter::LoginCenter() {
@@ -191,9 +192,9 @@ int LoginCenter::_encData(const unsigned char secret[],
 
     cnt = (inlen & 0x7);
     if (0 < cnt) {
-        memcpy(&tmp, pin, cnt);
+        CacheUtil::bcopy(&tmp, pin, cnt);
         tmp ^= *pilot;
-        memcpy(pout, &tmp, cnt);
+        CacheUtil::bcopy(pout, &tmp, cnt);
     }
 
     return inlen;
@@ -206,8 +207,8 @@ void LoginCenter::creatTokenEnd(unsigned long& token,
     const unsigned uid1) {
     char tmp[8] = {0};
 
-    memcpy(tmp, &timestamp, 4);
-    memcpy(tmp + 4, &uid1, 4);
+    CacheUtil::bcopy(tmp, &timestamp, 4);
+    CacheUtil::bcopy(tmp + 4, &uid1, 4);
 
     _encData(secret, tmp, 8, &token);
     token ^= taskid;
@@ -560,7 +561,7 @@ NodeMsg* LoginCenter::genPlainMsg(unsigned link_no,
     msg = MsgCenter::creatMsg<MsgPlainTxt>(ENUM_MSG_FRAME_PLAIN, len);
     
     body = MsgCenter::getBody<MsgPlainTxt>(msg);
-    memcpy(body->m_txt, txt, len);
+    CacheUtil::bcopy(body->m_txt, txt, len);
 
     body->m_link_no = link_no;
     body->m_txt_len = len;

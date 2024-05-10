@@ -6,6 +6,7 @@
 #include"msgcenter.h"
 #include"logincenter.h"
 #include"agentproto.h"
+#include"cache.h"
 
 
 const SvrCenter::Worker SvrCenter::m_north_works[ENUM_MSG_CODE_END] = {
@@ -274,38 +275,38 @@ int SvrCenter::procSouthMsg(int hd, NodeMsg* msg) {
 }
 
 void SvrCenter::resetConf(RouterSvrConf* conf) {
-    memset(conf, 0, sizeof(*conf));
+    CacheUtil::bzero(conf, sizeof(*conf));
 
     conf->m_passwd1 = 0x12345678;
     conf->m_passwd2 = 0x987654321;
 }
 
 void SvrCenter::reset(RouterSvrData* data) {
-    memset(data, 0, sizeof(*data));
+    CacheUtil::bzero(data, sizeof(*data));
 }
 
 RouterSvrData* SvrCenter::allocData() {
     RouterSvrData* data = NULL;
 
-    data = (RouterSvrData*)malloc(sizeof(RouterSvrData));
+    data = (RouterSvrData*)CacheUtil::mallocAlign(sizeof(RouterSvrData));
     reset(data);
     return data;
 }
 
 void SvrCenter::freeData(RouterSvrData* data) {
-    free(data);
+    CacheUtil::freeAlign(data);
 }
 
 RouterSvrConf* SvrCenter::allocConf() {
     RouterSvrConf* data = NULL;
 
-    data = (RouterSvrConf*)malloc(sizeof(RouterSvrConf));
+    data = (RouterSvrConf*)CacheUtil::mallocAlign(sizeof(RouterSvrConf));
     resetConf(data);
     return data;
 }
 
 void SvrCenter::freeConf(RouterSvrConf* conf) {
-    free(conf);
+    CacheUtil::freeAlign(conf);
 }
 
 bool SvrCenter::existUsr(unsigned uid) {

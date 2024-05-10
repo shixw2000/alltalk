@@ -7,6 +7,7 @@
 #include"msgcenter.h"
 #include"logincenter.h"
 #include"agentproto.h"
+#include"cache.h"
 
 
 const CliCenter::Worker CliCenter::m_north_works[ENUM_MSG_CODE_END] = {
@@ -153,20 +154,20 @@ void CliCenter::start() {
 RouterCliConf* CliCenter::allocConf() {
     RouterCliConf* data = NULL;
 
-    data = (RouterCliConf*)malloc(sizeof(RouterCliConf));
+    data = (RouterCliConf*)CacheUtil::mallocAlign(sizeof(RouterCliConf));
     resetConf(data);
     return data;
 }
 
 void CliCenter::resetConf(RouterCliConf* conf) {
-    memset(conf, 0, sizeof(*conf));
+    CacheUtil::bzero(conf, sizeof(*conf));
 
     conf->m_passwd1 = 0x12345678;
     conf->m_passwd2 = 0x987654321;
 }
 
 void CliCenter::freeConf(RouterCliConf* conf) {
-    free(conf);
+    CacheUtil::freeAlign(conf);
 }
 
 RouterCliData* CliCenter::allocData(RouterCliConf* conf) {
@@ -190,8 +191,8 @@ void CliCenter::freeData(RouterCliData* data) {
 }
 
 void CliCenter::resetData(RouterCliData* data) {
-    memset(&data->m_login, 0, sizeof(data->m_login));
-    memset(&data->m_cache, 0, sizeof(data->m_cache));
+    CacheUtil::bzero(&data->m_login, sizeof(data->m_login));
+    CacheUtil::bzero(&data->m_cache, sizeof(data->m_cache));
     
     data->m_conf = NULL;
     data->m_self_fd = 0;
@@ -208,8 +209,8 @@ unsigned CliCenter::nextSid() {
 }
 
 void CliCenter::cleanCli(RouterCliData* data) { 
-    memset(&data->m_login, 0, sizeof(data->m_login));
-    memset(&data->m_cache, 0, sizeof(data->m_cache));
+    CacheUtil::bzero(&data->m_login, sizeof(data->m_login));
+    CacheUtil::bzero(&data->m_cache, sizeof(data->m_cache));
 
     data->m_self_fd = 0;
     data->m_sids.clear();

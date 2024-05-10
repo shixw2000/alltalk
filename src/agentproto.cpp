@@ -1,6 +1,3 @@
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<unistd.h>
 #include<errno.h>
 #include<cstring>
 #include<cstdlib>
@@ -8,6 +5,7 @@
 #include"sockframe.h"
 #include"isockmsg.h"
 #include"msgcenter.h"
+#include"cache.h"
 
 
 AgentProto::AgentProto(SockFrame* frame) {
@@ -77,7 +75,7 @@ int AgentProto::parseHead(SockBuffer* buffer,
         psz = &buffer->m_head[buffer->m_pos];
         
         if (cnt <= len) {
-            memcpy(psz, input, cnt);
+            CacheUtil::bcopy(psz, input, cnt);
 
             used += cnt;
             buffer->m_pos = DEF_MSG_HEAD_SIZE;
@@ -87,7 +85,7 @@ int AgentProto::parseHead(SockBuffer* buffer,
                 return -1;
             } 
         } else {
-            memcpy(psz, input, len);
+            CacheUtil::bcopy(psz, input, len);
 
             used += len;
             buffer->m_pos += len;
