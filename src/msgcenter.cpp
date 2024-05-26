@@ -69,7 +69,7 @@ void MsgCenter::fillMsg(NodeMsg* msg,
     char* psz = MsgTool::getMsg(msg);
     int pos = MsgTool::getMsgPos(msg);
 
-    CacheUtil::bcopy(psz + pos, buf, len); 
+    MiscTool::bcopy(psz + pos, buf, len); 
     MsgTool::skipMsgPos(msg, len);
 }
 

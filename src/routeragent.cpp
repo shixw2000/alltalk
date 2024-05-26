@@ -31,7 +31,8 @@ void AgentListener::onClose(int hd) {
     m_agent_db->onClose(hd);
 } 
 
-int AgentListener::parseData(int fd, const char* buf, int size) {
+int AgentListener::parseData(int fd, const char* buf, 
+    int size, const SockAddr*) {
     int ret = 0;
 
     ret = m_agent_db->parseData(fd, buf, size);
@@ -67,7 +68,8 @@ int AgentCli::onConnOK(int hd, ConnOption&) {
     return ret;
 }
 
-int AgentCli::parseData(int fd, const char* buf, int size) {
+int AgentCli::parseData(int fd, const char* buf, 
+    int size, const SockAddr* ) {
     int ret = 0;
 
     ret = m_agent_db->parseData(fd, buf, size);
@@ -200,7 +202,7 @@ int AgentCenter::addLink(const char ip[],
     if (!existLink(link_type)) {
         LinkAddr* addr = (LinkAddr*)CacheUtil::mallocAlign(sizeof(LinkAddr));
 
-        CacheUtil::bzero(addr, sizeof(LinkAddr));
+        MiscTool::bzero(addr, sizeof(LinkAddr));
         addr->m_uid = uid;
         addr->m_link_type = link_type;
         addr->m_port = port;
@@ -351,7 +353,7 @@ AgentConf* AgentCenter::allocConf() {
     AgentConf* conf = NULL;
 
     conf = (AgentConf*)CacheUtil::mallocAlign(sizeof(AgentConf));
-    CacheUtil::bzero(conf, sizeof(AgentConf));
+    MiscTool::bzero(conf, sizeof(AgentConf));
     
     return conf;
 }
@@ -366,7 +368,7 @@ AgentBase* AgentCenter::allocAgent(const char ip[],
  
     data = (AgentBase*)CacheUtil::mallocAlign(sizeof(AgentBase));
     if (NULL != data) {
-        CacheUtil::bzero(data, sizeof(*data));
+        MiscTool::bzero(data, sizeof(*data));
         
         data->m_timestamp = MiscTool::getTimeSec();
 

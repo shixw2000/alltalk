@@ -127,7 +127,8 @@ public:
     
     virtual int process(int hd, NodeMsg* msg);
 
-    virtual int parseData(int fd, const char* buf, int size);
+    virtual int parseData(int fd, const char* buf,
+        int size, const SockAddr* addr);
 
 private:
     AgentCenter* m_agent_db;
@@ -145,7 +146,8 @@ public:
     
     virtual int process(int hd, NodeMsg* msg);
 
-    virtual int parseData(int fd, const char* buf, int size); 
+    virtual int parseData(int fd, const char* buf,
+        int size, const SockAddr* addr); 
 
     int startAgent(unsigned uid, const MsgTunnel* body);
 

@@ -166,7 +166,8 @@ int SvrCenter::onNewSock(int parentId,
     }
 }
 
-int SvrCenter::parseData(int fd, const char* buf, int size) {
+int SvrCenter::parseData(int fd, const char* buf, 
+    int size, const SockAddr*) {
     RouterSvrData* data = NULL;
     int ret = 0;
 
@@ -275,14 +276,14 @@ int SvrCenter::procSouthMsg(int hd, NodeMsg* msg) {
 }
 
 void SvrCenter::resetConf(RouterSvrConf* conf) {
-    CacheUtil::bzero(conf, sizeof(*conf));
+    MiscTool::bzero(conf, sizeof(*conf));
 
     conf->m_passwd1 = 0x12345678;
     conf->m_passwd2 = 0x987654321;
 }
 
 void SvrCenter::reset(RouterSvrData* data) {
-    CacheUtil::bzero(data, sizeof(*data));
+    MiscTool::bzero(data, sizeof(*data));
 }
 
 RouterSvrData* SvrCenter::allocData() {

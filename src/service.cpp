@@ -23,7 +23,7 @@ Service::Service() {
 
     m_rd_timeout = 0;
     m_wr_timeout = 0;
-    CacheUtil::bzero(m_log_dir, sizeof(m_log_dir));
+    MiscTool::bzero(m_log_dir, sizeof(m_log_dir));
 }
 
 Service::~Service() {

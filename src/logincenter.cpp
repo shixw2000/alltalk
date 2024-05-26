@@ -192,9 +192,9 @@ int LoginCenter::_encData(const unsigned char secret[],
 
     cnt = (inlen & 0x7);
     if (0 < cnt) {
-        CacheUtil::bcopy(&tmp, pin, cnt);
+        MiscTool::bcopy(&tmp, pin, cnt);
         tmp ^= *pilot;
-        CacheUtil::bcopy(pout, &tmp, cnt);
+        MiscTool::bcopy(pout, &tmp, cnt);
     }
 
     return inlen;
@@ -207,8 +207,8 @@ void LoginCenter::creatTokenEnd(unsigned long& token,
     const unsigned uid1) {
     char tmp[8] = {0};
 
-    CacheUtil::bcopy(tmp, &timestamp, 4);
-    CacheUtil::bcopy(tmp + 4, &uid1, 4);
+    MiscTool::bcopy(tmp, &timestamp, 4);
+    MiscTool::bcopy(tmp + 4, &uid1, 4);
 
     _encData(secret, tmp, 8, &token);
     token ^= taskid;
@@ -561,7 +561,7 @@ NodeMsg* LoginCenter::genPlainMsg(unsigned link_no,
     msg = MsgCenter::creatMsg<MsgPlainTxt>(ENUM_MSG_FRAME_PLAIN, len);
     
     body = MsgCenter::getBody<MsgPlainTxt>(msg);
-    CacheUtil::bcopy(body->m_txt, txt, len);
+    MiscTool::bcopy(body->m_txt, txt, len);
 
     body->m_link_no = link_no;
     body->m_txt_len = len;

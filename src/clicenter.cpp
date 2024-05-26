@@ -160,7 +160,7 @@ RouterCliConf* CliCenter::allocConf() {
 }
 
 void CliCenter::resetConf(RouterCliConf* conf) {
-    CacheUtil::bzero(conf, sizeof(*conf));
+    MiscTool::bzero(conf, sizeof(*conf));
 
     conf->m_passwd1 = 0x12345678;
     conf->m_passwd2 = 0x987654321;
@@ -191,8 +191,8 @@ void CliCenter::freeData(RouterCliData* data) {
 }
 
 void CliCenter::resetData(RouterCliData* data) {
-    CacheUtil::bzero(&data->m_login, sizeof(data->m_login));
-    CacheUtil::bzero(&data->m_cache, sizeof(data->m_cache));
+    MiscTool::bzero(&data->m_login, sizeof(data->m_login));
+    MiscTool::bzero(&data->m_cache, sizeof(data->m_cache));
     
     data->m_conf = NULL;
     data->m_self_fd = 0;
@@ -209,8 +209,8 @@ unsigned CliCenter::nextSid() {
 }
 
 void CliCenter::cleanCli(RouterCliData* data) { 
-    CacheUtil::bzero(&data->m_login, sizeof(data->m_login));
-    CacheUtil::bzero(&data->m_cache, sizeof(data->m_cache));
+    MiscTool::bzero(&data->m_login, sizeof(data->m_login));
+    MiscTool::bzero(&data->m_cache, sizeof(data->m_cache));
 
     data->m_self_fd = 0;
     data->m_sids.clear();
@@ -284,7 +284,8 @@ int CliCenter::onConnOK(int hd, ConnOption&) {
     return ret;
 }
 
-int CliCenter::parseData(int fd, const char* buf, int size) {
+int CliCenter::parseData(int fd, const char* buf,
+    int size, const SockAddr*) {
     RouterCliData* data = NULL;
     int ret = 0;
 

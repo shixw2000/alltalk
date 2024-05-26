@@ -59,7 +59,8 @@ public:
     
     virtual int process(int hd, NodeMsg* msg);
 
-    virtual int parseData(int fd, const char* buf, int size); 
+    virtual int parseData(int fd, const char* buf, 
+        int size, const SockAddr* addr); 
 
     RouterCliData* findUsr(const unsigned& uid);
     void addUsr(const unsigned& uid, RouterCliData* data);
