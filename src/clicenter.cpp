@@ -517,7 +517,7 @@ unsigned CliCenter::regSid(const unsigned& uid, int fd) {
         LOG_DEBUG("reg_sid| uid=%u| fd=%d| sid=%u|",
             uid, fd, sid);
     } else {
-        LOG_DEBUG("reg_sid| uid=%u| fd=%d| msg=invalid usr|",
+        LOG_INFO("reg_sid| uid=%u| fd=%d| msg=invalid usr|",
             uid, fd);
     }
 

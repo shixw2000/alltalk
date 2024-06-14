@@ -114,6 +114,8 @@ int AgentProto::parseBody(int direction,
             used += left;
         }
 
+        MsgCenter::flip(pMsg);
+
         LOG_DEBUG("parse_msg| fd=%d| len=%d|"
             " size=%d| left=%d|",
             fd, len, size, left);

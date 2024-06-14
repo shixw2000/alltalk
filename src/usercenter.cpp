@@ -50,6 +50,7 @@ static bool __timerOneSec(long param1, long) {
 SvrCenter::SvrCenter(SockFrame* frame, LoginCenter* center,
         AgentProto* proto) : m_cap(MAX_SVR_DATA_CAP) {
     m_frame = frame;
+    m_timer_1sec = NULL;
     m_center = center;
     m_proto = proto;
 }
@@ -60,12 +61,18 @@ SvrCenter::~SvrCenter() {
 int SvrCenter::init() {
     int ret = 0;
 
-    m_frame->schedule(0, 1, &__timerOneSec, (long)this);
+    m_timer_1sec = m_frame->allocTimer();
+    m_frame->setParam(m_timer_1sec, &__timerOneSec, (long)this); 
 
     return ret;
 }
 
 void SvrCenter::finish() {
+    if (NULL != m_timer_1sec) {
+        m_frame->freeTimer(m_timer_1sec);
+        m_timer_1sec = NULL;
+    }
+    
     if (!m_users.empty()) {
         for (typeItr itr=m_users.begin(); 
             itr!=m_users.end(); ++itr) {
@@ -92,6 +99,8 @@ void SvrCenter::start() {
         
         m_frame->creatSvr(conf->m_ip, conf->m_port, this, (long)conf);
     }
+
+    m_frame->startTimer(m_timer_1sec, 0, 1);
 } 
 
 void SvrCenter::timerOneSec() {
@@ -643,7 +652,8 @@ int SvrCenter::_forward(unsigned uid, NodeMsg* msg) {
         ret = m_frame->dispatch(fd, msg);
         if (0 != ret) {
             LOG_INFO("user_forward| uid=%u| fd=%d|"
-                " ret=%d| msg=dispatch error|", fd, ret);
+                " ret=%d| msg=dispatch error|", 
+                uid, fd, ret);
         }
     } else {
         LOG_INFO("user_forward| uid=%u| msg=not exists|", uid); 

@@ -36,6 +36,7 @@ public:
     
     static void fillMsg(NodeMsg* msg, const void* buf, int len);
     static void skipMsgPos(NodeMsg* pb, int pos);
+    static void flip(NodeMsg* pb);
     
     static void setDirection(NodeMsg* msg, int direction);
     static int getDirection(NodeMsg* msg);

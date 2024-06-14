@@ -66,11 +66,14 @@ int MsgCenter::getMsgSize(NodeMsg* msg) {
 
 void MsgCenter::fillMsg(NodeMsg* msg, 
     const void* buf, int len) {
-    char* psz = MsgTool::getMsg(msg);
-    int pos = MsgTool::getMsgPos(msg);
+    char* psz = MsgTool::getCurr(msg);
 
-    MiscTool::bcopy(psz + pos, buf, len); 
+    MiscTool::bcopy(psz, buf, len); 
     MsgTool::skipMsgPos(msg, len);
+}
+
+void MsgCenter::flip(NodeMsg* pb) {
+    MsgTool::flip(pb);
 }
 
 void MsgCenter::skipMsgPos(NodeMsg* msg, 

@@ -6,6 +6,7 @@
 #include"isockapi.h"
 
 
+struct TimerObj;
 class SockFrame;
 class LoginCenter;
 class AgentProto;
@@ -125,6 +126,7 @@ private:
     static const Worker m_south_works[ENUM_MSG_CODE_END];
     const int m_cap;
     SockFrame* m_frame;
+    TimerObj* m_timer_1sec;
     LoginCenter* m_center;
     AgentProto* m_proto;
     typeMapUsr m_users;
